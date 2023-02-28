@@ -1,38 +1,39 @@
 import React, { useState, useEffect } from "react";
-import StoreOpPull from "./storeOpPull.js";
+import StoreOpCard from "./StoreOpCard.js";
 
 function Main() {
-	const [hoursOpData, sethoursOpData] = useState(false);
+	const [storeHoursData, setStoreHoursData] = useState(Object);
 	
 
 	
 	useEffect(() => {
-		gethoursOpData();
+		getStoreHoursData();
 	});
 
-	var getStoreHoursUrl = ``
+	var getStoreHoursUrl = `https://82wrmo39r3.execute-api.us-east-2.amazonaws.com/default/-hoursofop-list`;
+  
 
-	const gethoursOpData = async () => {
+	const getStoreHoursData = async () => {
 		const response = await fetch(getStoreHoursUrl);
 		const jsonData = await response.json()
 		if (jsonData && jsonData.message !== "Not Found") {
       const displayResult = JSON.parse(jsonData.body).Items
       console.log(displayResult)
-  
+     // console.log(JSON.parse(jsonData.body).Items)
 
-			sethoursOpData(JSON.parse(jsonData.body).Items);
-	
+			setStoreHoursData(JSON.parse(jsonData.body).Items);
+		//	console.log(jsonData.body.Items)
 		}
 		else {
-			sethoursOpData({})
+			setStoreHoursData({})
 		}
 	};
 	
 	return (
 		<div>
-			< StoreOpPull hoursOpData={hoursOpData} />
+			<StoreOpCard storeHoursData={storeHoursData} />
 		</div>
 	);
 }
 
-export default Main;
+export default App;
